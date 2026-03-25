@@ -1,17 +1,26 @@
 name: Build Genzflexy
-on: [push]
+on: [push, workflow_dispatch]
+
 jobs:
   deploy:
     runs-on: windows-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # This fixes your Node 20 warning
     steps:
       - uses: actions/checkout@v4
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Build EXE
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build and Publish
         run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./output
-      - name: Upload
+
+      - name: Upload Finished EXE
         uses: actions/upload-artifact@v4
         with:
           name: Genzflexy-App
