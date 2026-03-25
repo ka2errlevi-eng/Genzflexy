@@ -1,0 +1,36 @@
+public partial class MainWindow : Window {
+    public MainWindow() {
+        InitializeComponent();
+        
+        // 1. SECURITY CHECK - Lock the software to Ka2errLevi
+        if (!LicenseGuard.Check(HardwareID.Get())) {
+            MessageBox.Show($"Software Not Activated.\nYour HWID: {HardwareID.Get()}\nContact Ka2errLevi for License.");
+            Application.Current.Shutdown();
+        }
+
+        // 2. START HARDWARE MONITOR (USB/Bluetooth)
+        HardwareMonitor.Start((port) => {
+            Dispatcher.Invoke(() => {
+                StatusText.Text = $"Device Found: {port}";
+                StatusDot.Fill = Brushes.LimeGreen;
+            });
+        });
+    }
+
+    // 3. SEND FLEXY (The Money Maker)
+    private async void btnSend_Click(object sender, RoutedEventArgs e) {
+        string phone = txtPhone.Text;
+        int amount = int.Parse(txtAmount.Text);
+        string op = cmbOperator.Text; // Mobilis, Djezzy, Ooredoo
+
+        string ussd = op switch {
+            "Mobilis" => $"*610*{phone}*{amount}*0000#",
+            "Djezzy"  => $"*770*{phone}*{amount}*0000#",
+            "Ooredoo" => $"*115*{phone}*{amount}*0000#",
+            _ => ""
+        };
+
+        bool success = await Modem.ExecuteUSSD(ussd);
+        if(success) MessageBox.Show("Flexy Sent! / تم الإرسال");
+    }
+}
