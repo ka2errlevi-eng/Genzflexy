@@ -1,0 +1,18 @@
+<Window x:Class="Genzflexy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
+        Title="Genzflexy" Height="500" Width="400" Background="#121212" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="GENZFLEXY" FontSize="28" FontWeight="Bold" Foreground="#F1C40F" HorizontalAlignment="Center"/>
+            <TextBox x:Name="txtPhone" Margin="0,20,0,10" Padding="10" Text="Phone Number"/>
+            <TextBox x:Name="txtAmount" Margin="0,0,0,10" Padding="10" Text="Amount"/>
+            <ComboBox x:Name="cmbOp" SelectedIndex="0" Margin="0,0,0,20">
+                <ComboBoxItem Content="Mobilis"/>
+                <ComboBoxItem Content="Djezzy"/>
+                <ComboBoxItem Content="Ooredoo"/>
+            </ComboBox>
+            <Button Content="SEND FLEXY" Height="50" Background="#E31D2B" Foreground="White" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
